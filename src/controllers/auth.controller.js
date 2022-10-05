@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const nodemailer = require("nodemailer");
 const User = require("../models").User;
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
@@ -90,4 +91,27 @@ exports.login = async (req, res) => {
     response.message = error.message;
     res.send(response);
   }
+};
+
+exports.sent_email = async (req, res) => {
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "healo.pencake@gmail.com", // generated ethereal user
+      pass: "csgubglwzydqahxo", // generated ethereal password
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Healo" <healo.pencake@gmail.com>', // sender address
+    to: "rahmatafriyanton@gmail.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+  res.status(200).send(info);
 };

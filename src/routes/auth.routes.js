@@ -12,4 +12,6 @@ router.post(
 
 router.post("/login", controller.login);
 
+router.get("/sent_email", controller.sent_email);
+
 module.exports = router;
