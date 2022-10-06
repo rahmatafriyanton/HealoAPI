@@ -105,6 +105,8 @@ exports.validate_email = async (req, res) => {
     data: [],
   };
 
+  
+
   try {
     const user = await User.findOne({
       where: {
@@ -121,7 +123,7 @@ exports.validate_email = async (req, res) => {
       response.message = "Validation key expired!";
       return res.status(403).send(response);
     }
-
+console.log("USERR", user)
     if (user.email_validation_key !== req.body.email_validation_key) {
       response.message = "Validation key not valid!";
       return res.status(403).send(response);
@@ -132,10 +134,11 @@ exports.validate_email = async (req, res) => {
       );
 
       if (update) {
+        response.status = "Success"
         response.message = "Email activated successfully!";
         return res.status(200).send(response);
       } else {
-        response.message = "Email actib=vation failed!";
+        response.message = "Email activation failed!";
         return res.status(403).send(response);
       }
     }
@@ -159,7 +162,7 @@ async function sent_email(user_data) {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Healo" <healo.pencake@gmail.com>', // sender address
-    to: "rahmatafriyanton@gmail.com", // list of receivers
+    to: user_data.user_email, // list of receivers
     subject: "Healo Email Validation", // Subject line
     text: "", // plain text body
     html: `<p>Hello, ${user_data.user_name}. Here is your email validation code: </p><br/><b>${user_data.email_validation_key}</b>`, // html body
