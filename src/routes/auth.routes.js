@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { validateSignup } = require("../middleware");
+const { validateSignup, authJwt } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 
 router.post(
@@ -10,8 +10,8 @@ router.post(
   controller.register
 );
 
-router.post("/login", controller.login);
+router.post("/validate_email", authJwt.verifyToken, controller.validate_email);
 
-router.get("/sent_email", controller.sent_email);
+router.post("/login", controller.login);
 
 module.exports = router;

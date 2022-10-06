@@ -64,6 +64,16 @@ module.exports = (sequelize, DataTypes) => {
       agreement_time: {
         type: DataTypes.DATE,
       },
+      is_email_validated: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+      },
+      email_validation_key: {
+        type: DataTypes.INTEGER(5),
+      },
+      email_validation_valid_until: {
+        type: DataTypes.DATE,
+      },
     },
     {
       sequelize,

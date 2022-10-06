@@ -8,10 +8,13 @@ var bcrypt = require("bcryptjs");
 const { user } = require("../models");
 
 exports.register = async (req, res) => {
+  let user_data = req.body;
+  user_data.email_validation_key = Math.floor(1000 + Math.random() * 9000);
+  user_data.email_validation_valid_until = new Date(Date.now() + 5 * 60 * 1000);
   // Save User to Database
   try {
-    req.body.password = bcrypt.hashSync(req.body.password, 8);
-    const createUser = await User.create(req.body);
+    user_data.password = bcrypt.hashSync(user_data.password, 8);
+    const createUser = await User.create(user_data);
     if (createUser) {
       const user = await User.findOne({
         where: {
@@ -31,6 +34,8 @@ exports.register = async (req, res) => {
             expiresIn: 86400, // 24 hours
           }
         );
+        await sent_email(user_data);
+
         res.send({
           status: "success",
           message: "Account has been created",
@@ -93,7 +98,53 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.sent_email = async (req, res) => {
+exports.validate_email = async (req, res) => {
+  let response = {
+    status: "Failed",
+    message: "",
+    data: [],
+  };
+
+  try {
+    const user = await User.findOne({
+      where: {
+        user_id: req.user_id,
+      },
+    });
+
+    if (!user) {
+      response.message = "User Not Found.";
+      return res.status(404).send(response);
+    }
+
+    if (user.email_validation_valid_until > new Date()) {
+      response.message = "Validation key expired!";
+      return res.status(403).send(response);
+    }
+
+    if (user.email_validation_key !== req.body.email_validation_key) {
+      response.message = "Validation key not valid!";
+      return res.status(403).send(response);
+    } else {
+      const update = await User.update(
+        { is_email_validated: 1 },
+        { where: { user_id: req.user_id } }
+      );
+
+      if (update) {
+        response.message = "Email activated successfully!";
+        return res.status(200).send(response);
+      } else {
+        response.message = "Email actib=vation failed!";
+        return res.status(403).send(response);
+      }
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+async function sent_email(user_data) {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -109,9 +160,10 @@ exports.sent_email = async (req, res) => {
   let info = await transporter.sendMail({
     from: '"Healo" <healo.pencake@gmail.com>', // sender address
     to: "rahmatafriyanton@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    subject: "Healo Email Validation", // Subject line
+    text: "", // plain text body
+    html: `<p>Hello, ${user_data.user_name}. Here is your email validation code: </p><br/><b>${user_data.email_validation_key}</b>`, // html body
   });
-  res.status(200).send(info);
-};
+  console.log("INFOOO", info);
+  return info;
+}
