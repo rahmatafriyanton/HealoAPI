@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 05, 2022 at 06:24 AM
+-- Generation Time: Oct 06, 2022 at 06:40 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.6
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `healoAPI`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assesment_questions`
+--
+
+CREATE TABLE `assesment_questions` (
+  `question_id` int(11) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `question` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assesment_question_answers`
+--
+
+CREATE TABLE `assesment_question_answers` (
+  `answer_id` int(11) NOT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `answer` varchar(255) DEFAULT NULL,
+  `is_correct` tinyint(1) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -53,19 +82,35 @@ CREATE TABLE `users` (
   `is_accept_agreement` tinyint(1) DEFAULT NULL,
   `agreement_time` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL
+  `updatedAt` datetime NOT NULL,
+  `is_email_validated` tinyint(1) DEFAULT 0,
+  `email_validation_key` int(5) DEFAULT NULL,
+  `email_validation_valid_until` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `role_id`, `user_name`, `user_email`, `password`, `user_is_available`, `user_gender`, `user_year_born`, `user_goal`, `user_avail_hour`, `user_desc`, `user_profile_pict`, `is_accept_agreement`, `agreement_time`, `createdAt`, `updatedAt`) VALUES
-(11, 1, 'ian', 'ian@mail.com', '$2a$08$gEYxknjL4VJV/gN64Wzdmud1XJQfpaEGhwg5WH6Yv.vdN5dt2BtHK', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-09-27 01:00:00', '2022-10-03 15:02:35', '2022-10-03 15:02:35');
+INSERT INTO `users` (`user_id`, `role_id`, `user_name`, `user_email`, `password`, `user_is_available`, `user_gender`, `user_year_born`, `user_goal`, `user_avail_hour`, `user_desc`, `user_profile_pict`, `is_accept_agreement`, `agreement_time`, `createdAt`, `updatedAt`, `is_email_validated`, `email_validation_key`, `email_validation_valid_until`) VALUES
+(14, 1, 'rahmat_afriyanton', 'rahmatafriyanton@mail.com', '$2a$08$xjPB3paYUNTgEJ1BSF0F7.r.GLGLl5phkDGpcL5CYBiSWtREKfJKe', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-09-27 01:00:00', '2022-10-05 12:17:42', '2022-10-05 18:01:50', 1, 8424, '2022-10-05 12:22:42');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `assesment_questions`
+--
+ALTER TABLE `assesment_questions`
+  ADD PRIMARY KEY (`question_id`);
+
+--
+-- Indexes for table `assesment_question_answers`
+--
+ALTER TABLE `assesment_question_answers`
+  ADD PRIMARY KEY (`answer_id`),
+  ADD KEY `question_id` (`question_id`);
 
 --
 -- Indexes for table `SequelizeMeta`
@@ -85,10 +130,32 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `assesment_questions`
+--
+ALTER TABLE `assesment_questions`
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `assesment_question_answers`
+--
+ALTER TABLE `assesment_question_answers`
+  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `assesment_question_answers`
+--
+ALTER TABLE `assesment_question_answers`
+  ADD CONSTRAINT `assesment_question_answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `assesment_questions` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
