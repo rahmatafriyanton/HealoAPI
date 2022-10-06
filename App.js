@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 const db = require("./src/models/");
-db.sequelize.sync();
+db.sequelize.sync({ alter: true });
 
 // parsing body request
 app.use(
