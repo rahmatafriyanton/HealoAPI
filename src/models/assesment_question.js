@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ assesment_question_answer }) {
       // define association here
-      this.hasMany(assesment_question_answer, { foreignKey: "question_id" });
+      this.hasMany(assesment_question_answer, {
+        as: "answers",
+        foreignKey: "question_id",
+      });
     }
   }
   assesment_question.init(
@@ -20,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      question_number: DataTypes.INTEGER,
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       question: DataTypes.STRING,

@@ -6,7 +6,7 @@ const controller = require("../controllers/user.controller");
 
 router.post(
   "/update_profile",
-  [authJwt.verifyToken],
+  [authJwt.verify_token],
   controller.update_profile
 );
 

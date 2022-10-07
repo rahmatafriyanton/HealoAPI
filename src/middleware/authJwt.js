@@ -1,27 +1,52 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
-const User = db.user;
 
-verifyToken = (req, res, next) => {
+const User = require("../models").User;
+
+verify_token = (req, res, next) => {
+  let response = {
+    status: "Failed",
+    message: "",
+    data: [],
+  };
+
   let token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(403).send({
-      message: "No token provided!",
-    });
+    response.message = "No token provided!";
+    return res.status(403).send(response);
   }
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, async (err, decoded) => {
     if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!",
-      });
+      response.message = "Token is not valid!";
+      return res.status(401).send(response);
     }
+
     req.user_id = decoded.user_id;
     next();
   });
 };
 
+is_email_valid = async (req, res, next) => {
+  let response = {
+    status: "Failed",
+    message: "Email is not activated yet!",
+    data: [],
+  };
+
+  const user = await User.findOne({
+    where: {
+      user_id: req.user_id,
+    },
+  });
+
+  if (user && user.is_email_validated !== true) {
+    return res.status(403).send(response);
+  }
+  next();
+};
 const authJwt = {
-  verifyToken: verifyToken,
+  verify_token,
+  is_email_valid,
 };
 module.exports = authJwt;

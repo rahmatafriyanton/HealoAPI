@@ -10,7 +10,7 @@ router.post(
   controller.register
 );
 
-router.post("/validate_email", authJwt.verifyToken, controller.validate_email);
+router.post("/validate_email", authJwt.verify_token, controller.validate_email);
 
 router.post("/login", controller.login);
 
