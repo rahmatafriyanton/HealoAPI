@@ -4,9 +4,10 @@ var methodOverride = require("method-override");
 const cors = require("cors");
 const app = express();
 
-const db = require("./src/models/");
-db.sequelize.sync();
+const { sequelize } = require("./src/models/");
 
+// const db = require("./src/models/");
+// db.sequelize.sync({ force: true });
 // parsing body request
 app.use(
   cors({
@@ -42,6 +43,8 @@ const user_route = require("./src/routes/user.routes");
 app.use("/api/user/", user_route);
 
 const PORT = process.env.PORT | 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, async () => {
+  console.log("Server up on http://localhost:5000");
+  // await sequelize.authenticate({ alter: true });
+  console.log("Database Connected!");
 });
