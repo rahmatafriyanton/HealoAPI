@@ -1,11 +1,8 @@
-const db = require("../models/index");
 const nodemailer = require("nodemailer");
 const User = require("../models").User;
 const config = require("../config/auth.config");
-const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { user } = require("../models");
 
 exports.register = async (req, res) => {
   let user_data = req.body;
@@ -134,7 +131,7 @@ console.log("USERR", user)
       );
 
       if (update) {
-        response.status = "Success"
+        response.status = "success";
         response.message = "Email activated successfully!";
         return res.status(200).send(response);
       } else {

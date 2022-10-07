@@ -2,18 +2,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("assesment_questions", {
-      question_id: {
-        type: Sequelize.INTEGER,
+    await queryInterface.createTable("assesment_question_answers", {
+      answer_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      description: {
+      question_id: {
+        type: Sequelize.INTEGER,
+      },
+      answer: {
         type: Sequelize.STRING,
       },
-      question: {
-        type: Sequelize.STRING,
+      is_correct: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -26,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("assesment_questions");
+    await queryInterface.dropTable("assesment_question_answers");
   },
 };

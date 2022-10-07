@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 const db = require("./src/models/");
-db.sequelize.sync({ alter: true });
+db.sequelize.sync();
 
 // parsing body request
 app.use(
@@ -32,6 +32,14 @@ app.get("/", (req, res) => {
 // include router
 const auth_router = require("./src/routes/auth.routes");
 app.use("/api/auth/", auth_router);
+
+// include router
+const assessment_router = require("./src/routes/assessment.routes");
+app.use("/api/assessment/", assessment_router);
+
+// include router
+const user_route = require("./src/routes/user.routes");
+app.use("/api/user/", user_route);
 
 const PORT = process.env.PORT | 3000;
 app.listen(PORT, () => {
