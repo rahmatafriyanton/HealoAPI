@@ -102,6 +102,8 @@ exports.validate_email = async (req, res) => {
     data: [],
   };
 
+  
+
   try {
     const user = await User.findOne({
       where: {
@@ -118,7 +120,7 @@ exports.validate_email = async (req, res) => {
       response.message = "Validation key expired!";
       return res.status(403).send(response);
     }
-
+console.log("USERR", user)
     if (user.email_validation_key !== req.body.email_validation_key) {
       response.message = "Validation key not valid!";
       return res.status(403).send(response);
