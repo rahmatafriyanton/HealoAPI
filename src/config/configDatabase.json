@@ -5,7 +5,7 @@
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
-    "logging": false
+    "logging": true
   },
   "test": {
     "username": "root",

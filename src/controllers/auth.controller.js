@@ -1,11 +1,8 @@
-const db = require("../models/index");
 const nodemailer = require("nodemailer");
 const User = require("../models").User;
 const config = require("../config/auth.config");
-const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { user } = require("../models");
 
 exports.register = async (req, res) => {
   let user_data = req.body;
@@ -132,10 +129,11 @@ exports.validate_email = async (req, res) => {
       );
 
       if (update) {
+        response.status = "success";
         response.message = "Email activated successfully!";
         return res.status(200).send(response);
       } else {
-        response.message = "Email actib=vation failed!";
+        response.message = "Email activation failed!";
         return res.status(403).send(response);
       }
     }
@@ -159,7 +157,7 @@ async function sent_email(user_data) {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Healo" <healo.pencake@gmail.com>', // sender address
-    to: "rahmatafriyanton@gmail.com", // list of receivers
+    to: user_data.user_email, // list of receivers
     subject: "Healo Email Validation", // Subject line
     text: "", // plain text body
     html: `<p>Hello, ${user_data.user_name}. Here is your email validation code: </p><br/><b>${user_data.email_validation_key}</b>`, // html body
