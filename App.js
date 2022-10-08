@@ -42,6 +42,9 @@ app.use("/api/assessment/", assessment_router);
 const user_route = require("./src/routes/user.routes");
 app.use("/api/user/", user_route);
 
+// Images
+app.use(express.static("public"));
+app.use("/images", express.static("images"));
 const PORT = process.env.PORT | 3000;
 app.listen(PORT, async () => {
   console.log(`Server up on http://localhost:${PORT}`);

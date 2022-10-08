@@ -15,4 +15,9 @@ router.post(
   controller.update_profile
 );
 
+router.get(
+  "/profile_images",
+  [authJwt.verify_token, authJwt.is_email_valid],
+  controller.get_all_profile_image
+);
 module.exports = router;
