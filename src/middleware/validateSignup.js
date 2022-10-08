@@ -1,4 +1,3 @@
-const db = require("../models/index");
 const User = require("../models").User;
 check_username_email = async (req, res, next) => {
   let result = {

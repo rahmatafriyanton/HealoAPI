@@ -67,8 +67,9 @@ exports.update_profile = async (req, res) => {
     }
 
     let user_data = req.body;
+    console.log("USERR", user_data);
 
-    if (user_data.password !== "") {
+    if (user_data.password !== undefined || user_data.password !== "") {
       user_data.password = bcrypt.hashSync(user_data.password, 8);
     }
 
