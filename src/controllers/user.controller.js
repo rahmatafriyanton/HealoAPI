@@ -1,4 +1,5 @@
 const User = require("../models").User;
+const profile_image = require("../models").profile_image;
 const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -80,6 +81,44 @@ exports.update_profile = async (req, res) => {
       response.message = "Profile updated successfully!";
       res.status(200).send(response);
     }
+  } catch (error) {
+    response.message = error.message;
+    res.send(response);
+  }
+};
+
+exports.get_all_profile_image = async (req, res) => {
+  let response = {
+    status: "failed",
+    message: "",
+    data: [],
+  };
+  try {
+    const check_images = await profile_image.findAll();
+    if (check_images.length === 0) {
+      const images_data = [
+        {
+          image_id: 1,
+          image_path: "/images/profile/user-1.png",
+        },
+      ];
+
+      for (let i = 1; i <= 6; i++) {
+        await profile_image.create({
+          image_id: i,
+          image_path: `/images/profile/user-${i}.png`,
+        });
+      }
+    }
+
+    const images = await profile_image.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    response.status = "success";
+    response.message = "Profile picture data retrieved";
+    response.data = images;
+
+    res.send(response);
   } catch (error) {
     response.message = error.message;
     res.send(response);
