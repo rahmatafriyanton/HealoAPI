@@ -5,7 +5,13 @@
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+    "dialectOptions": {
+      "dateStrings": true,
+      "typeCast": true,
+      "timezone": "+07:00"
+    },
+    "timezone": "+07:00"
   },
   "test": {
     "username": "root",
