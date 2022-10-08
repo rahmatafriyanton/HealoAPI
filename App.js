@@ -11,7 +11,7 @@ const { sequelize } = require("./src/models/");
 // parsing body request
 app.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: "*",
   })
 );
 app.use(express.json());
@@ -44,7 +44,7 @@ app.use("/api/user/", user_route);
 
 const PORT = process.env.PORT | 3000;
 app.listen(PORT, async () => {
-  console.log("Server up on http://localhost:5000");
-  // await sequelize.authenticate({ alter: true });
+  console.log(`Server up on http://localhost:${PORT}`);
+  await sequelize.authenticate({ alter: true });
   console.log("Database Connected!");
 });

@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-const db = require("../models");
-
 const User = require("../models").User;
 
 verify_token = (req, res, next) => {
@@ -22,7 +20,18 @@ verify_token = (req, res, next) => {
       return res.status(401).send(response);
     }
 
-    req.user_id = decoded.user_id;
+    const user = await User.findOne({
+      where: {
+        user_id: decoded.user_id,
+      },
+    });
+
+    if (!user) {
+      response.message = "User not found!";
+      res.send(response);
+    }
+
+    req.user_id = user.user_id;
     next();
   });
 };

@@ -1,7 +1,6 @@
-const config = require("../config/auth.config");
-const assesment_question = require("../models").assesment_question;
+const assesment_question = require("../../models").assesment_question;
 const assesment_question_answer =
-  require("../models").assesment_question_answer;
+  require("../../models").assesment_question_answer;
 
 exports.get_assessment_questions = async (req, res) => {
   let response = {
@@ -22,8 +21,8 @@ exports.get_assessment_questions = async (req, res) => {
     });
 
     if (questions) {
-      response.status = "Success";
-      response.message = "Data Retrieved";
+      response.status = "success";
+      response.message = "Questions Data Retrieved";
       response.data = questions;
     }
   } catch (error) {
@@ -44,9 +43,10 @@ exports.create_assessment_questions = async (req, res) => {
 
   for (const question of questions) {
     try {
-      const assessment = await assesment_question.create(question);
-      console.log("Assessment", assessment.question_id);
-
+      const assessment = await assesment_question.create({
+        ...question,
+        question_id: question.question_number,
+      });
       for (const answer of question.answers) {
         try {
           await assesment_question_answer.create({
@@ -61,6 +61,7 @@ exports.create_assessment_questions = async (req, res) => {
       console.log(error.message);
     }
   }
-
-  res.send("Bisa");
+  response.status = "success";
+  response.message = "Question Created";
+  res.send(response);
 };
