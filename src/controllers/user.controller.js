@@ -3,6 +3,49 @@ const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+exports.get_profile = async (req, res) => {
+  let response = {
+    status: "failed",
+    message: "",
+    data: [],
+  };
+  const user_id = req.query.id;
+  if (user_id === undefined || user_id === "") {
+    response.message = "User ID required!";
+    return res.send(response);
+  }
+  try {
+    const user = await User.findOne({
+      where: {
+        user_id: req.query.id,
+      },
+      attributes: {
+        exclude: [
+          "createdAt",
+          "updatedAt",
+          "email_validation_key",
+          "email_validation_valid_until",
+          "is_accept_agreement",
+          "agreement_time",
+          "password",
+        ],
+      },
+    });
+
+    if (user) {
+      response.status = "success";
+      response.message = "User profile data retrieved";
+      response.data = user;
+    } else {
+      response.message = "User not found!";
+    }
+    res.send(response);
+  } catch (error) {
+    response.message = error.message;
+    res.send(response);
+  }
+};
+
 exports.update_profile = async (req, res) => {
   let response = {
     status: "Failed",
