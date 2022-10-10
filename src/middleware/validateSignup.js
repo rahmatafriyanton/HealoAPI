@@ -1,28 +1,23 @@
-const User = require("../models").User;
+const {
+  findUserByUsername,
+  findUserByEmail,
+} = require("../service/user.service");
+
 check_username_email = async (req, res, next) => {
   let result = {
-    status: "Failed",
+    status: "failed",
     message: "",
     data: {},
   };
   try {
     // Username
-    let user = await User.findOne({
-      where: {
-        user_name: req.body.user_name,
-      },
-    });
-    if (user) {
+    if (await findUserByUsername(req.body.user_name)) {
       result.message = "Username is already in use!";
       return res.status(201).send(result);
     }
+
     // Email
-    user = await User.findOne({
-      where: {
-        user_email: req.body.user_email,
-      },
-    });
-    if (user) {
+    if (await findUserByEmail(req.body.user_email)) {
       result.message = "Email is already in use!";
       return res.status(201).send(result);
     }
@@ -33,7 +28,8 @@ check_username_email = async (req, res, next) => {
     return res.status(400).send(result);
   }
 };
+
 const verifySignUp = {
-  check_username_email: check_username_email,
+  check_username_email,
 };
 module.exports = verifySignUp;
