@@ -6,6 +6,25 @@ const app = express();
 
 const { sequelize } = require("./src/models/");
 
+// Socket
+const io = require("socket.io")(3001, {
+  cors: {
+    origin: ["*"],
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("make_connection", (user_id) => {
+    socket.join(user_id);
+  });
+
+  socket.on("set_healer_available", (user_id) => {
+    healer_available.push(user_id);
+  });
+
+  socket.on("find_healer", (user_id) => {});
+});
+
 // const db = require("./src/models/");
 // db.sequelize.sync({ force: true });
 // parsing body request
@@ -23,6 +42,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers",
     "x-access-token, Origin, Content-Type, Accept"
   );
+  req.io = io;
   next();
 });
 
@@ -49,27 +69,6 @@ app.use("/api/chat/", chat_route);
 // Images
 app.use(express.static("public"));
 app.use("/images", express.static("images"));
-
-// Socket
-const io = require("socket.io")(3001, {
-  cors: {
-    origin: ["*"],
-  },
-});
-
-const healer_available = [];
-
-io.on("connection", (socket) => {
-  socket.on("make_connection", (user_id) => {
-    socket.join(user_id);
-  });
-
-  socket.on("set_healer_available", (user_id) => {
-    healer_available.push(user_id);
-  });
-
-  socket.on("find_healer", (user_id) => {});
-});
 
 const PORT = process.env.PORT | 3000;
 app.listen(PORT, async () => {

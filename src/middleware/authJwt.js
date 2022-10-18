@@ -57,7 +57,7 @@ is_email_valid = async (req, res, next) => {
 };
 
 is_healer = async (req, res, next) => {
-  let result = {
+  let response = {
     status: "Failed",
     message: "",
     data: {},
@@ -71,7 +71,7 @@ is_healer = async (req, res, next) => {
 
     if (user && user.role_id !== 1) {
       response.message = "You don't have rights to access this service";
-      res.send(response);
+      return res.send(response);
     }
 
     next();
@@ -82,7 +82,7 @@ is_healer = async (req, res, next) => {
 };
 
 is_seeker = async (req, res, next) => {
-  let result = {
+  let response = {
     status: "failed",
     message: "",
     data: {},
@@ -96,7 +96,7 @@ is_seeker = async (req, res, next) => {
 
     if (user && user.role_id !== 2) {
       response.message = "You don't have rights to access this service";
-      res.send(response);
+      return res.send(response);
     }
 
     next();
@@ -134,7 +134,7 @@ verifyAccess = async (req, res, next) => {
       }
     } catch (error) {
       response.message = error.message;
-      res.send(response);
+      return res.send(response);
     }
   }
 

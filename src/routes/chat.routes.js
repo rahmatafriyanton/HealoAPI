@@ -12,4 +12,9 @@ router.post(
   controller.find_healer
 );
 
+router.post(
+  "/healer/add_to_queue",
+  [verify_token, is_email_valid, is_healer],
+  controller.add_healer_to_queue
+);
 module.exports = router;
