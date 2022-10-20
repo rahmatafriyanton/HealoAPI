@@ -29,8 +29,10 @@
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.2",
     "nodemailer": "^6.8.0",
     "sequelize": "^6.23.2",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "uuid": "^9.0.0"
   }
 }

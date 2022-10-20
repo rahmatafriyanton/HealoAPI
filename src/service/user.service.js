@@ -2,6 +2,7 @@ const User = require("../models").User;
 
 exports.findUserByUserID = async (user_id) => {
   return await User.findOne({
+    raw: true,
     where: {
       user_id,
     },
@@ -10,6 +11,7 @@ exports.findUserByUserID = async (user_id) => {
 
 exports.findUserByUsername = async (user_name) => {
   return await User.findOne({
+    raw: true,
     where: {
       user_name,
     },
@@ -18,6 +20,7 @@ exports.findUserByUsername = async (user_name) => {
 
 exports.findUserByEmail = async (user_email) => {
   return await User.findOne({
+    raw: true,
     where: {
       user_email,
     },
