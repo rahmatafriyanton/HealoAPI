@@ -66,7 +66,7 @@ exports.confirm_pairing = (io, users_connected, pair_confirm) => {
       return;
     });
 
-    io.emit("chat_session_created", new_room);
+    io.to(new_room.room_id).emit("chat_session_created", new_room);
   } else {
     data.status = "queue";
     healer_available.push(data.healer_id);
