@@ -1,33 +1,35 @@
-// const queue = require("../helpers/queue.helper.js");
-const queue = [];
-
-function addToQueue(data) {
-  const { length } = queue;
-  const id = length + 1;
-  const found = queue.some((el) => el.seeker_id === data.seeker_id);
-  if (!found) queue.push(data);
-  return queue;
-}
+const { v4: uuidv4 } = require("uuid");
+const queue = require("../helpers/queue.helper.js");
 
 exports.find_healer = async (req, res) => {
   let response = {
     status: "success",
-    message: "User added to queue!",
+    message: "Request added to queue!",
     data: [],
   };
 
   const payload = {
+    id: uuidv4(),
     seeker_id: req.user_id,
     healer_id: "",
+    status: "queue",
     data: req.body,
   };
 
-  addToQueue(payload);
-
-  response.data = queue;
+  queue.add_pairing_req(payload);
   res.send(response);
 };
 
-exports.add_healer_to_queue = (req, res) => {
-  res.send(JSON.stringify(req.body));
+exports.add_healer_available = (req, res) => {
+  // req.io.to(req.user_id.toString()).emit("got_paired", "It works!");
+  queue.add_healer_available(req.user_id);
+  res.send(queue.get_healer_available());
+};
+
+exports.pair_the_user = (io) => {
+  const pair = queue.pair_the_user();
+  io.to(pair.healer_id.toString()).emit("got_paired", pair);
+  console.log("Pair Req: ", queue.get_pairing_req());
+  console.log("Healer Avail: ", queue.get_healer_available());
+  console.log("Pair Waiting: ", queue.get_pairing_waiting());
 };

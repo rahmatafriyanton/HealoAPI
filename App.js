@@ -4,6 +4,8 @@ var methodOverride = require("method-override");
 const cors = require("cors");
 const app = express();
 
+const queue = require("./src/helpers/queue.helper.js");
+
 const { sequelize } = require("./src/models/");
 
 // Socket
@@ -14,15 +16,14 @@ const io = require("socket.io")(3001, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("make_connection", (user_id) => {
+  socket.on("create_connection", (user_id) => {
     socket.join(user_id);
   });
 
-  socket.on("set_healer_available", (user_id) => {
-    healer_available.push(user_id);
+  socket.on("confirm_pairing", (pair_confirm) => {
+    console.log("Pair Confirm", pair_confirm);
+    queue.confirm_pairing(io, JSON.parse(pair_confirm));
   });
-
-  socket.on("find_healer", (user_id) => {});
 });
 
 // const db = require("./src/models/");
@@ -65,6 +66,12 @@ app.use("/api/user/", user_route);
 // include chat router
 const chat_route = require("./src/routes/chat.routes");
 app.use("/api/chat/", chat_route);
+
+const cron = require("node-cron");
+const { pair_the_user } = require("./src/controllers/chat.controller");
+cron.schedule("* * * * * *", function () {
+  pair_the_user(io);
+});
 
 // Images
 app.use(express.static("public"));
