@@ -13,7 +13,7 @@ exports.find_healer = async (req, res) => {
     seeker_id: req.user_id,
     healer_id: "",
     status: "queue",
-    data: req.body,
+    ...req.body,
   };
 
   queue.add_pairing_req(payload);
@@ -28,7 +28,7 @@ exports.add_healer_available = (req, res) => {
 
 exports.pair_the_user = (io) => {
   const pair = queue.pair_the_user();
-  io.to(pair.healer_id.toString()).emit("got_paired", pair);
+  io.to(pair.healer_id).emit("got_paired", pair);
   console.log("Pair Req: ", queue.get_pairing_req());
   console.log("Healer Avail: ", queue.get_healer_available());
   console.log("Pair Waiting: ", queue.get_pairing_waiting());
