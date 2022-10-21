@@ -15,14 +15,22 @@ const io = require("socket.io")(3001, {
   },
 });
 
+let users_connected = [];
 io.on("connection", (socket) => {
   socket.on("create_connection", (user_id) => {
+    let user_index = users_connected.findIndex(
+      (user) => user.user_id == user_id
+    );
+
+    users_connected.push({ socket: socket, user_id: user_id });
     socket.join(user_id);
+
+    console.log("Connection", users_connected);
   });
 
   socket.on("confirm_pairing", (pair_confirm) => {
-    console.log("Pair Confirm", pair_confirm);
-    queue.confirm_pairing(io, JSON.parse(pair_confirm));
+    // console.log("Pair Confirm", pair_confirm);
+    queue.confirm_pairing(io, users_connected, pair_confirm);
   });
 });
 
