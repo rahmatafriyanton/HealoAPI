@@ -10,15 +10,14 @@ exports.get_profile = async (req, res) => {
     message: "",
     data: [],
   };
-  const user_id = req.query.id;
+  let user_id = req.query.id;
   if (user_id === undefined || user_id === "") {
-    response.message = "User ID required!";
-    return res.send(response);
+    user_id = req.user_id
   }
   try {
     const user = await User.findOne({
       where: {
-        user_id: req.query.id,
+        user_id: user_id,
       },
       attributes: {
         exclude: [
