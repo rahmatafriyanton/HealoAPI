@@ -1,3 +1,5 @@
+const { getChatList } = require("../service/chat.service");
+
 const { v4: uuidv4 } = require("uuid");
 const queue = require("../helpers/queue.helper.js");
 
@@ -33,3 +35,27 @@ exports.pair_the_user = (io) => {
   console.log("Healer Avail: ", queue.get_healer_available());
   console.log("Pair Waiting: ", queue.get_pairing_waiting());
 };
+
+
+
+// Chat 
+exports.get_chat_list = async (req, res) => {
+  let response = {
+    status: "failed",
+    message: "",
+    data: [],
+  };
+  try {
+    const chats = await getChatList(req);
+    response.status = "success";
+    response.message = "Chats data retrieved";
+    response.data = chats;
+
+    res.send(response);
+  } catch (error) {
+    response.message = error.message;
+    res.send(response);
+  }
+};
+
+// End Chat

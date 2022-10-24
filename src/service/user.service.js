@@ -1,11 +1,22 @@
 const User = require("../models").User;
 
-exports.findUserByUserID = async (user_id) => {
+exports.findUserByUserID = async (user_id, attr=false) => {
   return await User.findOne({
     raw: true,
     where: {
       user_id,
     },
+    attributes: attr ? {
+      exclude: [
+        "createdAt",
+        "updatedAt",
+        "email_validation_key",
+        "email_validation_valid_until",
+        "is_accept_agreement",
+        "agreement_time",
+        "password",
+      ],
+    } : {},
   });
 };
 

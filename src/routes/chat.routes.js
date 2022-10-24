@@ -17,4 +17,12 @@ router.post(
   [verify_token, is_email_valid, is_healer],
   controller.add_healer_available
 );
+
+
+// Chat
+router.get(
+  "/", [verify_token, is_email_valid], controller.get_chat_list
+);
+
+// End Chat
 module.exports = router;
