@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": 'healo123',
+    "password": "healo123",
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
