@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": '',
+    "password": 'healo123',
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
@@ -15,14 +15,14 @@
   },
   "test": {
     "username": "root",
-    "password": '',
+    "password": null,
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": '',
+    "password": null,
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql"
