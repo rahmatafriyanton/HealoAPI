@@ -16,12 +16,15 @@ module.exports = {
       },
       preflection: {
         type: Sequelize.STRING,
+        defaultValue: "",
       },
       preflection_time: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       postflection: {
         type: Sequelize.TEXT,
+        defaultValue: "",
       },
       postflection_time: {
         type: Sequelize.DATE,

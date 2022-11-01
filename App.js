@@ -21,16 +21,21 @@ io.on("connection", (socket) => {
     let user_index = users_connected.findIndex(
       (user) => user.user_id == user_id
     );
-
-    users_connected.push({ socket: socket, user_id: user_id });
-    socket.join(user_id);
-
-    console.log("Connection", users_connected);
+    if (user_index === -1) {
+      users_connected.push({ socket: socket, user_id: user_id });
+      socket.join(user_id);
+      console.log("User Connected", user_id, socket.id);
+    }
+    check_user_room(user_id, socket);
   });
 
   socket.on("confirm_pairing", (pair_confirm) => {
-    // console.log("Pair Confirm", pair_confirm);
     queue.confirm_pairing(io, users_connected, pair_confirm);
+  });
+
+  socket.on("leave_room", function (room) {
+    socket.leave(room);
+    console.log("User leave room: ", room);
   });
 });
 
@@ -52,6 +57,7 @@ app.use(function (req, res, next) {
     "x-access-token, Origin, Content-Type, Accept"
   );
   req.io = io;
+  req.users_connected = users_connected;
   next();
 });
 
@@ -76,7 +82,10 @@ const chat_route = require("./src/routes/chat.routes");
 app.use("/api/chat/", chat_route);
 
 const cron = require("node-cron");
-const { pair_the_user } = require("./src/controllers/chat.controller");
+const {
+  pair_the_user,
+  check_user_room,
+} = require("./src/controllers/chat.controller");
 cron.schedule("* * * * * *", function () {
   pair_the_user(io);
 });

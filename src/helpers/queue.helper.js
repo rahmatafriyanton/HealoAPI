@@ -66,14 +66,13 @@ exports.confirm_pairing = (io, users_connected, pair_confirm) => {
       return;
     });
 
-
-    io.emit("chat_session_created", new_room);
+    io.in(new_room.room_id).emit("chat_session_created", new_room);
   } else {
     data.status = "queue";
     healer_available.push(data.healer_id);
     data.healer_id = "";
     pairing_req.push(data);
-    console.log(pairing_req);
+    // console.log(pairing_req);
   }
   return null;
 };
