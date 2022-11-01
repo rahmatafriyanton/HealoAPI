@@ -16,14 +16,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       message_id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       room_id: DataTypes.STRING,
       sender_id: DataTypes.INTEGER,
       message: DataTypes.STRING,
-      message_status: DataTypes.INTEGER,
+      message_status: {
+        type: DataTypes.INTEGER,
+        defaultValue: 2,
+      },
     },
     {
       sequelize,

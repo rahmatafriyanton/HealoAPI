@@ -18,11 +18,22 @@ router.post(
   controller.add_healer_available
 );
 
-
 // Chat
+router.get("/", [verify_token, is_email_valid], controller.get_chat_list);
+
 router.get(
-  "/", [verify_token, is_email_valid], controller.get_chat_list
+  "/:room_id",
+  [verify_token, is_email_valid],
+  controller.get_chat_detail
 );
+
+router.post(
+  "/sent_message",
+  [verify_token, is_email_valid],
+  controller.sent_message
+);
+
+router.post("/end_chat", [verify_token, is_email_valid], controller.end_chat);
 
 // End Chat
 module.exports = router;

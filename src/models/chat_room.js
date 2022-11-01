@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       healer_id: DataTypes.INTEGER,
       preflection: DataTypes.STRING,
       preflection_time: DataTypes.DATE,
-      postflection: DataTypes.TEXT,
+      postflection: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+      },
       postflection_time: DataTypes.DATE,
       room_status: DataTypes.STRING,
       room_closed_by: DataTypes.INTEGER,

@@ -159,7 +159,7 @@ function createToken(data) {
     },
     config.secret,
     {
-      expiresIn: 86400, // 24 hours
+      expiresIn: "365d", // 365 days
     }
   );
 

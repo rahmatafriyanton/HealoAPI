@@ -4,10 +4,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("chat_messages", {
       message_id: {
+        type: Sequelize.STRING,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
       },
       room_id: {
         type: Sequelize.STRING,
@@ -20,6 +19,7 @@ module.exports = {
       },
       message_status: {
         type: Sequelize.INTEGER,
+        defaultValue: 2,
       },
       createdAt: {
         allowNull: false,
