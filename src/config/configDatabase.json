@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "healo123",
+    "password": null,
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
@@ -13,18 +13,18 @@
     },
     "timezone": "+07:00"
   },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "healoAPI",
-    "host": "localhost",
-    "dialect": "mysql"
-  },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "healo123",
     "database": "healoAPI",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false,
+    "dialectOptions": {
+      "dateStrings": true,
+      "typeCast": true,
+      "timezone": "+07:00"
+    },
+    "timezone": "+07:00"
   }
 }
