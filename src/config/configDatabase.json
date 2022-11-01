@@ -14,8 +14,8 @@
     "timezone": "+07:00"
   },
   "production": {
-    "username": "root",
-    "password": "healo123",
+    "username": "healo",
+    "password": "healopassword",
     "database": "healoAPI",
     "host": "localhost",
     "dialect": "mysql",
