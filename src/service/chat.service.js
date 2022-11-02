@@ -1,4 +1,4 @@
-const Op = require("Sequelize").Op;
+const Op = require("sequelize").Op;
 const chat_room = require("../models").chat_room;
 const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");

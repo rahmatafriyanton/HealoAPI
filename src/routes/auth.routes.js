@@ -14,4 +14,12 @@ router.post("/validate_email", authJwt.verify_token, controller.validate_email);
 
 router.post("/login", controller.login);
 
+router.post("/verify_token", authJwt.verify_token, (req, res) => {
+  res.send({
+    status: "success",
+    message: "Token valid!",
+    data: [],
+  });
+});
+
 module.exports = router;
