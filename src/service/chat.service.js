@@ -40,7 +40,7 @@ exports.getChatList = async (req) => {
       delete chat.seeker_id;
       delete chat.healer_id;
 
-      return chat;
+      chats[i] = chat;
     }
   }
   return chats;
