@@ -22,6 +22,9 @@ exports.add_healer_available = (user_id) => {
 };
 
 exports.pair_the_user = () => {
+  console.log("Pairing Request", pairing_req);
+  console.log("Healer Aveailable", healer_available);
+
   if (pairing_req.length >= 1) {
     if (healer_available.length >= 1) {
       const random_index = Math.floor(Math.random() * healer_available.length);
