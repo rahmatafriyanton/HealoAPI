@@ -26,11 +26,13 @@ exports.find_healer = async (req, res) => {
   };
 
   queue.add_pairing_req(payload);
+  console.log("Pairing Req", queue.get_pairing_req());
   res.send(response);
 };
 
 exports.add_healer_available = (req, res) => {
   queue.add_healer_available(req.user_id);
+  console.log("Healer Aveailable", queue.get_healer_available());
   res.send({
     status: "success",
     message: "Healer added to queue!",
