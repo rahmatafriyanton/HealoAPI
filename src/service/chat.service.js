@@ -3,6 +3,7 @@ const chat_room = require("../models").chat_room;
 const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");
 const { v4: uuidv4 } = require("uuid");
+const moment = require("moment");
 
 const TimeAgo = require("javascript-time-ago");
 const id = require("javascript-time-ago/locale/id");
@@ -176,8 +177,12 @@ async function getLastMessage(room_id) {
       return {
         ...message,
         status: status,
-        createdAt: getFormattedDate.format(new Date(message.createdAt), "mini"),
-        updatedAt: getFormattedDate.format(new Date(message.createdAt), "mini"),
+        createdAt: moment(new Date(message.createdAt)).format(
+          "DD-MM-yyyy HH:mm"
+        ),
+        updatedAt: moment(new Date(message.updatedAt)).format(
+          "DD-MM-yyyy HH:mm"
+        ),
       };
     }
   } catch (error) {
@@ -213,6 +218,12 @@ async function getAllMessage(room_id) {
         return {
           ...message,
           status: status,
+          createdAt: moment(new Date(message.createdAt)).format(
+            "DD-MM-yyyy HH:mm"
+          ),
+          updatedAt: moment(new Date(message.updatedAt)).format(
+            "DD-MM-yyyy HH:mm"
+          ),
         };
       });
       return messages;
@@ -221,7 +232,7 @@ async function getAllMessage(room_id) {
     return error.message;
   }
 
-  return {};
+  return null;
 }
 
 function set_user_respond(user) {
