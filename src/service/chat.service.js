@@ -184,7 +184,7 @@ async function getLastMessage(room_id) {
     return error.message;
   }
 
-  return {};
+  return null;
 }
 
 async function getAllMessage(room_id) {
@@ -213,14 +213,6 @@ async function getAllMessage(room_id) {
         return {
           ...message,
           status: status,
-          createdAt: getFormattedDate.format(
-            new Date(message.createdAt),
-            "mini"
-          ),
-          updatedAt: getFormattedDate.format(
-            new Date(message.createdAt),
-            "mini"
-          ),
         };
       });
       return messages;
