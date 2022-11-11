@@ -27,7 +27,7 @@ verify_token = (req, res, next) => {
       },
     });
 
-    if (!user) {
+    if (!user || user === undefined || user === null) {
       response.message = "User not found!";
       res.send(response);
     }
