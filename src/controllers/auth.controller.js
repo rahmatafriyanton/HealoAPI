@@ -125,6 +125,42 @@ exports.validate_email = async (req, res) => {
   }
 };
 
+exports.resend_validation_code = async (req, res) => {
+  let response = {
+    status: "Failed",
+    message: "",
+    data: [],
+  };
+
+  try {
+    const user = await findUserByUserID(req.user_id);
+
+    if (!user) {
+      response.message = "User Not Found.";
+      return res.status(404).send(response);
+    }
+
+    const new_user_data = {
+      ...user,
+      email_validation_key: Math.floor(1000 + Math.random() * 9000),
+      email_validation_valid_until: new Date(Date.now() + 5 * 60 * 1000),
+    };
+
+    if (await updateUser(new_user_data)) {
+      response.status = "success";
+      response.message = "Email activated successfully!";
+      if (await sent_email(new_user_data)) {
+        return res.status(200).send(response);
+      }
+    } else {
+      response.message = "Email activation failed!";
+      return res.status(403).send(response);
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
 async function sent_email(user_data) {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({

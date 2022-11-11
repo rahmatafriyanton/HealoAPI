@@ -10,6 +10,12 @@ router.post(
   controller.register
 );
 
+router.get(
+  "/resend_validation_code",
+  authJwt.verify_token,
+  controller.resend_validation_code
+);
+
 router.post("/validate_email", authJwt.verify_token, controller.validate_email);
 
 router.post("/login", controller.login);
