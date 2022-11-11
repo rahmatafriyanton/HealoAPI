@@ -30,9 +30,10 @@ verify_token = (req, res, next) => {
     if (!user || user === undefined || user === null) {
       response.message = "User not found!";
       res.send(response);
+    } else {
+      req.user_id = user.user_id;
     }
 
-    req.user_id = user.user_id;
     next();
   });
 };
