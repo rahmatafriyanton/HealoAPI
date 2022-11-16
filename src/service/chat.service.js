@@ -4,10 +4,7 @@ const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment");
-const momentTz = require("moment-timezone");
 
-moment.locale("id");
-moment.tz.setDefault("Asia/Jakarta");
 const TimeAgo = require("javascript-time-ago");
 const id = require("javascript-time-ago/locale/id");
 
