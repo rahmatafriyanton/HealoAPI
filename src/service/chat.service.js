@@ -4,6 +4,7 @@ const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment");
+const momentTz = require("moment-timezone");
 
 const TimeAgo = require("javascript-time-ago");
 const id = require("javascript-time-ago/locale/id");
@@ -86,6 +87,8 @@ exports.sentMessage = async (req) => {
 
   try {
     if (await chat_message.create(data)) {
+      // moment.locale("id");
+      // moment.tz.setDefault("Asia/Jakarta");
       data.createdAt = moment(new Date()).format("yyyy-MM-DD HH:mm");
       data.updatedAt = moment(new Date()).format("yyyy-MM-DD HH:mm");
       return data;
