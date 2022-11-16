@@ -4,6 +4,7 @@ const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");
 const { v4: uuidv4 } = require("uuid");
 const moment = require("moment");
+moment().tz("Asia/Jakarta").format();
 
 const TimeAgo = require("javascript-time-ago");
 const id = require("javascript-time-ago/locale/id");
@@ -84,7 +85,7 @@ exports.sentMessage = async (req) => {
     ...req.body,
   };
 
-  console.log("Dataa", data);
+  // console.log("Dataa", data);
 
   try {
     if (await chat_message.create(data)) return data;
