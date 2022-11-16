@@ -87,8 +87,8 @@ exports.sentMessage = async (req) => {
 
   try {
     if (await chat_message.create(data)) {
-      // moment.locale("id");
-      // moment.tz.setDefault("Asia/Jakarta");
+      moment.locale("id");
+      moment.tz.setDefault("Asia/Jakarta");
       data.createdAt = moment(new Date()).format("yyyy-MM-DD HH:mm");
       data.updatedAt = moment(new Date()).format("yyyy-MM-DD HH:mm");
       return data;
