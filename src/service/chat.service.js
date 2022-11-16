@@ -79,10 +79,12 @@ exports.sentMessage = async (req) => {
   const data = {
     message_id: uuidv4(),
     sender_id: req.user_id,
-    createdAt: moment(new Date()).format("DD-MM-yyyy HH:mm"),
-    updatedAt: moment(new Date()).format("DD-MM-yyyy HH:mm"),
+    createdAt: moment(new Date()).format("yyyy-MM-DD HH:mm"),
+    updatedAt: moment(new Date()).format("yyyy-MM-DD HH:mm"),
     ...req.body,
   };
+
+  console.log("Dataa", data);
 
   try {
     if (await chat_message.create(data)) return data;
