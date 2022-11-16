@@ -183,6 +183,8 @@ async function getLastMessage(room_id) {
           status = "deleted";
           break;
       }
+      moment.locale("id");
+      moment.tz.setDefault("Asia/Jakarta");
       return {
         ...message,
         status: status,
@@ -224,6 +226,8 @@ async function getAllMessage(room_id) {
             status = "deleted";
             break;
         }
+        moment.locale("id");
+        moment.tz.setDefault("Asia/Jakarta");
         return {
           ...message,
           status: status,
