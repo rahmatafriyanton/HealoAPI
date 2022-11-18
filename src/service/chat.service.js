@@ -3,14 +3,7 @@ const chat_room = require("../models").chat_room;
 const chat_message = require("../models").chat_message;
 const { findUserByUserID } = require("./user.service");
 const { v4: uuidv4 } = require("uuid");
-const moment = require("moment");
-const momentTz = require("moment-timezone");
 
-const TimeAgo = require("javascript-time-ago");
-const id = require("javascript-time-ago/locale/id");
-
-TimeAgo.addDefaultLocale(id);
-const getFormattedDate = new TimeAgo("id-ID");
 exports.createChatRoom = async (room) => {
   return await chat_room.create(room);
 };
@@ -83,8 +76,7 @@ exports.sentMessage = async (req) => {
     ...req.body,
   };
 
-  // console.log("Dataa", data);
-
+  const moment = require("moment");
   try {
     if (await chat_message.create(data)) {
       moment.locale("id");
@@ -183,8 +175,8 @@ async function getLastMessage(room_id) {
           status = "deleted";
           break;
       }
-      moment.locale("id");
-      moment.tz.setDefault("Asia/Jakarta");
+
+      const moment = require("moment");
       return {
         ...message,
         status: status,
@@ -226,8 +218,7 @@ async function getAllMessage(room_id) {
             status = "deleted";
             break;
         }
-        moment.locale("id");
-        moment.tz.setDefault("Asia/Jakarta");
+        const moment = require("moment");
         return {
           ...message,
           status: status,

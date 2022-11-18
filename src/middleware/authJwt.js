@@ -21,17 +21,22 @@ verify_token = (req, res, next) => {
       return res.status(401).send(response);
     }
 
-    const user = await User.findOne({
-      where: {
-        user_id: decoded.user_id,
-      },
-    });
+    try {
+      const user = await User.findOne({
+        where: {
+          user_id: decoded.user_id,
+        },
+      });
 
-    if (!user || user === undefined || user === null) {
-      response.message = "User not found!";
-      res.send(response);
-    } else {
-      req.user_id = user.user_id;
+      if (!user || user === undefined || user === null) {
+        response.message = "User not found!";
+        return res.send(response);
+      } else {
+        req.user_id = user.user_id;
+      }
+    } catch (error) {
+      response.message = error.message;
+      return res.send(response);
     }
 
     next();
